@@ -28,7 +28,9 @@ public interface MemberService {
 	//total Number of Faculty
 	public Long getFacultyCount();
 	//Total number of Student
-	public Long getStudentsCount(); 
+	public Long getStudentsCount();
+	
+	 
 	
 
 

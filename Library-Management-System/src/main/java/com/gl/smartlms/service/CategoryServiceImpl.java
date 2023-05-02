@@ -39,4 +39,15 @@ public class CategoryServiceImpl implements CategoryService {
 
 	}
 
+	@Override
+	public Long getTotalCount() {
+		return categoryRepository.count();
+	}
+
+	@Override
+	public List<Category> getAllBySort() {
+		return categoryRepository.findAllByOrderByNameAsc();
+	
+	}
+
 }

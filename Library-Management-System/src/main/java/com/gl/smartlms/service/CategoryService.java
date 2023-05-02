@@ -21,4 +21,9 @@ public interface CategoryService {
 	public Optional<Category> getCategory(Long id);
 	
 	public List<Category> getAll();
+	
+	public Long getTotalCount();
+	
+	public List<Category> getAllBySort();
+	
 }

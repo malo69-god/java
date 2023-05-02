@@ -53,5 +53,7 @@ public class CategoryController {
 		model.addAttribute("categories", categoryService.getAll());
 		return "/category/list";
 	}
+	
+	//delete pending
 
 }

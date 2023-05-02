@@ -4,12 +4,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.gl.smartlms.constants.Constants;
 import com.gl.smartlms.model.Category;
 import com.gl.smartlms.model.Member;
 import com.gl.smartlms.service.CategoryService;
@@ -61,13 +65,58 @@ public class CategoryRestController {
 			return new ResponseEntity<List<Category>>(clist, HttpStatus.FOUND);
 			
 		}
-		return new ResponseEntity(HttpStatus.NO_CONTENT);
+		return new ResponseEntity<List<Category>>(HttpStatus.NO_CONTENT);
 	}
 	
 	
 	
+	@GetMapping("/sorted/list")
+	public ResponseEntity<List<Category>> showAllMembersSortedByName() {
+
+		List<Category> clist = categoryService.getAllBySort();
+		if(clist != null) {
+			return new ResponseEntity<List<Category>>(clist, HttpStatus.FOUND);
+			
+		}
+		return new ResponseEntity<List<Category>>(HttpStatus.NO_CONTENT);
+	}
 	
 	
+	
+	@GetMapping("/total/count")
+	public ResponseEntity<String> countAllCategory(){
+		Long categoryCount = categoryService.getTotalCount();
+		if(categoryCount != 0) {
+		return new ResponseEntity<String>(categoryCount.toString(), HttpStatus.OK);
+	}
+		 return Constants.getResponseEntity(Constants.INCOMPLETE_DETAILS, HttpStatus.NO_CONTENT);
+	}
+	
+	
+	
+	@GetMapping("/{id}")
+	public ResponseEntity<String> findCategoryById(@PathVariable Long id) {
+		Optional<Category> optional = categoryService.getCategory(id);
+		ObjectMapper Obj = new ObjectMapper();
+		try{
+			if (optional.isPresent()) {
+			Category category = optional.get();
+			String categoryJson;
+			
+				categoryJson = Obj.writeValueAsString(category);
+				return new ResponseEntity<>(categoryJson, HttpStatus.FOUND);
+			
+		}
+			else {
+				return new ResponseEntity<String>( HttpStatus.NO_CONTENT);
+			}
+		
+		} catch (JsonProcessingException e) {
+			
+			e.printStackTrace();
+		}
+		return Constants.getResponseEntity(Constants.SOMETHING_WENT_WRONG, HttpStatus.INTERNAL_SERVER_ERROR);
+	}
 	
 	
 	
