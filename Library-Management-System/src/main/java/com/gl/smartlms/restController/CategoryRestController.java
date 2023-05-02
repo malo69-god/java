@@ -3,6 +3,7 @@ package com.gl.smartlms.restController;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -13,6 +14,7 @@ import com.gl.smartlms.model.Category;
 import com.gl.smartlms.model.Member;
 import com.gl.smartlms.service.CategoryService;
 
+import java.util.List;
 import java.util.Optional;
 
 import javax.validation.Valid;
@@ -49,6 +51,25 @@ public class CategoryRestController {
 		return  new  ResponseEntity<String>("Member Not Found",HttpStatus.NOT_FOUND);
 		
 	}
+	
+	
+	@GetMapping("/clist")
+	public ResponseEntity<List<Category>> showAllMembers() {
+
+		List<Category> clist = categoryService.getAll();
+		if(clist != null) {
+			return new ResponseEntity<List<Category>>(clist, HttpStatus.FOUND);
+			
+		}
+		return new ResponseEntity(HttpStatus.NO_CONTENT);
+	}
+	
+	
+	
+	
+	
+	
+	
 	
 	
 	

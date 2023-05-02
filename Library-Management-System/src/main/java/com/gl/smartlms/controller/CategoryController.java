@@ -47,6 +47,11 @@ public class CategoryController {
 		}
 	}
 	
-
+	
+	@RequestMapping(value = {"/", "/list"}, method = RequestMethod.GET)
+	public String showCategoriesPage(Model model) {
+		model.addAttribute("categories", categoryService.getAll());
+		return "/category/list";
+	}
 
 }
