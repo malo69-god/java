@@ -1,4 +1,4 @@
-package com.gl.smartlms.constants;
+ package com.gl.smartlms.constants;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,7 +33,7 @@ public class Constants {
 	public static final String SOMETHING_WENT_WRONG = "Something Went Wrong";
 	public static final String INVALID_DATA = "Invalid data";
 	public static final String INCOMPLETE_DETAILS = "Fields Are Missing";
-	public static final String NO_CONTENT = "No Content Found";
+	public static final String NO_CONTENT = "No Content Found List is Empty";
 	
 	public static ResponseEntity<String> getResponseEntity(String responseMessage, HttpStatus httpstatus){
 		
