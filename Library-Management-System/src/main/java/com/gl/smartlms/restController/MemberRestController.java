@@ -1,6 +1,7 @@
 package com.gl.smartlms.restController;
 
 import java.util.List;
+
 import java.util.Optional;
 
 import javax.validation.Valid;
@@ -12,7 +13,7 @@ import org.springframework.http.ResponseEntity;
 
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
+
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -20,7 +21,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 import org.springframework.web.bind.annotation.RestController;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
+
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.gl.smartlms.constants.Constants;
 import com.gl.smartlms.model.Member;
@@ -33,6 +34,12 @@ public class MemberRestController {
 	@Autowired
 	private MemberService memberService;
 
+	
+	
+	// ==============================================================
+	// Member Count API
+	// ==============================================================
+	
 	@GetMapping("/total/count")
 	public ResponseEntity<String> countAllMembers() {
 		Long memberCount = memberService.getTotalCount();
@@ -42,6 +49,10 @@ public class MemberRestController {
 		return Constants.getResponseEntity(Constants.INCOMPLETE_DETAILS, HttpStatus.NO_CONTENT);
 	}
 
+	// ==============================================================
+	//	Faculty  Member Count API
+	// ==============================================================
+	
 	@GetMapping("/faculty/count")
 	public ResponseEntity<String> countAllFacultyMembers() {
 		Long facultyCount = memberService.getFacultyCount();
@@ -50,6 +61,10 @@ public class MemberRestController {
 		}
 		return Constants.getResponseEntity(Constants.INCOMPLETE_DETAILS, HttpStatus.NO_CONTENT);
 	}
+	
+	// ==============================================================
+	//	Student Member Count API
+	// ==============================================================
 
 	@GetMapping("/student/count")
 	public ResponseEntity<String> countAllStudentMembers() {
@@ -59,27 +74,43 @@ public class MemberRestController {
 		}
 		return Constants.getResponseEntity(Constants.INCOMPLETE_DETAILS, HttpStatus.NO_CONTENT);
 	}
-
+	
+	// ==============================================================
+	//	Add Member API
+	// ==============================================================
 	@RequestMapping(value = "/add", method = RequestMethod.POST)
 	public ResponseEntity<String> saveMember(@Valid @RequestBody Member member) {
 
 		member = memberService.addNew(member);
-
+		if(member != null) {
 		return new ResponseEntity<String>(
 				"Member Added with Name " + member.getFirstName() + "and type " + member.getType(), HttpStatus.CREATED);
-
+		}
+		return Constants.getResponseEntity(Constants.SOMETHING_WENT_WRONG, HttpStatus.INTERNAL_SERVER_ERROR);
 	}
 
+	
+	// ==============================================================
+	//	List Member API(change)url
+	// ==============================================================
 	@GetMapping("/mlist")
 	public ResponseEntity<List<Member>> showAllMembers() {
 
 		List<Member> list = memberService.getAll();
-		if (list != null) {
-			return new ResponseEntity<List<Member>>(list, HttpStatus.FOUND);
+		try {
+			if (list != null) {
+				return new ResponseEntity<List<Member>>(list, HttpStatus.FOUND);
 
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
 		return new ResponseEntity<List<Member>>(HttpStatus.NO_CONTENT);
 	}
+	
+	// ==============================================================
+	//	Update Member API(change) url(change)
+	// ==============================================================
 
 	@PutMapping("/mupdate")
 	public ResponseEntity<String> updateMember(@Valid @RequestBody Member member) {
@@ -90,33 +121,32 @@ public class MemberRestController {
 
 			memberService.save(member);
 
-			return new ResponseEntity<String>("Member Updated With Name " + member1.get().getFirstName(),
-					HttpStatus.ACCEPTED);
+	return new ResponseEntity<String>("Member Updated With Name " + member1.get().getFirstName(),HttpStatus.ACCEPTED);
 		}
 
 		return new ResponseEntity<String>("Member Not Found", HttpStatus.NO_CONTENT);
 
 	}
 
+	// ==============================================================
+	//	Update Member API(change) 
+	// ==============================================================
+	
 	@GetMapping("/{id}")
 	public ResponseEntity<String> findMemberById(@PathVariable Long id) {
-		Optional<Member> optional = memberService.getMember(id);
 		ObjectMapper Obj = new ObjectMapper();
-		try{
+		Optional<Member> optional = memberService.getMember(id);
+
+		try {
 			if (optional.isPresent()) {
-			Member member = optional.get();
-			String memberJson;
-			
-				memberJson = Obj.writeValueAsString(member);
+				Member member = optional.get();
+				String memberJson = Obj.writeValueAsString(member);
 				return new ResponseEntity<>(memberJson, HttpStatus.FOUND);
-			
-		}
-			else {
-				return new ResponseEntity<String>( HttpStatus.NO_CONTENT);
+			} else {
+				return new ResponseEntity<String>(HttpStatus.NO_CONTENT);
 			}
-		
-		} catch (JsonProcessingException e) {
-			
+
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		return Constants.getResponseEntity(Constants.SOMETHING_WENT_WRONG, HttpStatus.INTERNAL_SERVER_ERROR);
