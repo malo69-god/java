@@ -27,4 +27,10 @@ public interface BookService {
 
 	public Long getTotalCount();
 
+	public List<Book> getByAuthorName(String authors);
+
+	public List<Book> getBooksByIdList(List<Long> ids);
+
+
+
 }

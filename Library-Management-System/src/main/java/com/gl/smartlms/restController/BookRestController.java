@@ -2,10 +2,12 @@ package com.gl.smartlms.restController;
 
 
 import java.util.List;
+
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -13,7 +15,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+
 import org.springframework.web.bind.annotation.RestController;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -21,8 +23,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.gl.smartlms.constants.Constants;
 import com.gl.smartlms.model.Book;
 import com.gl.smartlms.model.Category;
-import com.gl.smartlms.model.Member;
-import com.gl.smartlms.repository.BookRepository;
+
 import com.gl.smartlms.service.BookService;
 import com.gl.smartlms.service.CategoryService;
 
@@ -36,7 +37,10 @@ public class BookRestController {
 	@Autowired
 	private CategoryService categoryService;
 	
-	@GetMapping("/total/count")
+	
+	ObjectMapper Obj = new ObjectMapper();
+	
+	@GetMapping(value ="/total/count",produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<String> countAllBooks() {
 		Long bookCount = bookService.getTotalCount();
 		if (bookCount != 0) {
@@ -63,7 +67,7 @@ public class BookRestController {
 	
 	
 	
-	@GetMapping("/{id}")
+	@GetMapping(value ="/{id}" , produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<String> findBookById(@PathVariable Long id) {
 		ObjectMapper Obj = new ObjectMapper();
 		Optional<Book> optional = bookService.getBookById(id);
@@ -82,6 +86,69 @@ public class BookRestController {
 		}
 		return Constants.getResponseEntity(Constants.SOMETHING_WENT_WRONG, HttpStatus.INTERNAL_SERVER_ERROR);
 	}
+	
+	@GetMapping(value ="/find/{tagname}", produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<String> findBookBytag(@PathVariable ("tagname") String tag) {
+		ObjectMapper Obj = new ObjectMapper();
+		Book book = bookService.getByTag(tag);
+		try {
+		if(book != null) {
+		String bookJson = Obj.writeValueAsString(book);
+		return new ResponseEntity<>(bookJson, HttpStatus.FOUND);
+			} else {
+				return new ResponseEntity<String>(HttpStatus.NO_CONTENT);
+			}
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return Constants.getResponseEntity(Constants.SOMETHING_WENT_WRONG, HttpStatus.INTERNAL_SERVER_ERROR);
+	}
+	
+	
+	@GetMapping(value = "/find-by-author/{authors}", produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<String> findBooksByAuthor(@PathVariable("authors") String authors) {
+
+		
+		List<Book> book = bookService.getByAuthorName(authors);
+		try {
+			if (book != null) {
+
+				String bookJson = Obj.writeValueAsString(book);
+
+				return new ResponseEntity<String>(bookJson, HttpStatus.OK);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+	}
+	
+	
+	
+
+	
+	
+	
+	
+	
+	
+	
+	@GetMapping(value = "/find-books/{ids}", produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<String> findBooksWithIdList(@PathVariable List<Long> ids) {
+		List<Book> list = bookService.getBooksByIdList(ids);
+		try {
+			String bookJson = Obj.writeValueAsString(list);
+			return new ResponseEntity<String>(bookJson, HttpStatus.FOUND);
+		} catch (JsonProcessingException e) {
+			
+			e.printStackTrace();
+		}
+		return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+	}
+
+
 	
 	
 	@PostMapping("/badd/{id}")
@@ -125,7 +192,7 @@ public class BookRestController {
 	
 	
 	//update book as well as  Change Category
-	@PutMapping("/bupdate/{id}")
+	@PutMapping(value ="/bupdate/{id}" , produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<String> updateBook(@RequestBody Book book,@PathVariable Long id){
 		ObjectMapper Obj = new ObjectMapper();
 		Optional<Book> optional = bookService.getBookById(book.getId());
@@ -137,7 +204,7 @@ public class BookRestController {
 			bookService.saveBook(book);
 			try {
 				String bookJson = Obj.writeValueAsString(book);
-				return new ResponseEntity<String>("Succesfully Updated Book Details"+bookJson, HttpStatus.ACCEPTED);
+				return new ResponseEntity<String>("Succesfully Updated Book Details category of type"+category.get().getName()+" "+bookJson, HttpStatus.ACCEPTED);
 			} catch (JsonProcessingException e) {
 				
 				e.printStackTrace();

@@ -56,6 +56,17 @@ public class BookServiceImpl  implements BookService{
 	public Long getTotalCount() {
 		return bookRepository.count();
 	}
+
+	@Override
+	public List<Book> getByAuthorName(String authors) {
+	
+		return bookRepository.findByAuthors(authors);
+	}
+
+	@Override
+	public List<Book> getBooksByIdList(List<Long> ids) {
+		return bookRepository.findAllById(ids);
+	}
 	
 
 }
