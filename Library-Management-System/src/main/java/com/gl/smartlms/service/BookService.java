@@ -1,11 +1,7 @@
 package com.gl.smartlms.service;
 
 
-
-
-
-
-
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.stereotype.Service;
@@ -24,5 +20,11 @@ public interface BookService {
 	public Book saveBook(Book book);
 
 	public Optional<Book> getBookById(Long id);
+
+	public List<Book> getAll();
+	
+	public Book getBook(Long id);
+
+	public Long getTotalCount();
 
 }

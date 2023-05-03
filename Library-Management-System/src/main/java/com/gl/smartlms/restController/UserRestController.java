@@ -25,8 +25,8 @@ public class UserRestController {
 	@Autowired
 	private UserService userService;
 
-	@Autowired
-	ObjectMapper Obj;
+	
+	ObjectMapper Obj = new ObjectMapper();
 
 // ==============================================================
 // User Login API

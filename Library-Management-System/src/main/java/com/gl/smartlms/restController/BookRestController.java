@@ -1,11 +1,13 @@
 package com.gl.smartlms.restController;
 
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -16,8 +18,10 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.gl.smartlms.constants.Constants;
 import com.gl.smartlms.model.Book;
 import com.gl.smartlms.model.Category;
+import com.gl.smartlms.model.Member;
 import com.gl.smartlms.repository.BookRepository;
 import com.gl.smartlms.service.BookService;
 import com.gl.smartlms.service.CategoryService;
@@ -31,6 +35,54 @@ public class BookRestController {
 	
 	@Autowired
 	private CategoryService categoryService;
+	
+	@GetMapping("/total/count")
+	public ResponseEntity<String> countAllBooks() {
+		Long bookCount = bookService.getTotalCount();
+		if (bookCount != 0) {
+			return new ResponseEntity<String>(bookCount.toString(), HttpStatus.OK);
+		}
+		return Constants.getResponseEntity(Constants.INCOMPLETE_DETAILS, HttpStatus.NO_CONTENT);
+	}
+	
+	
+	@GetMapping("/list")
+	public ResponseEntity<List<Book>> showAllBooks() {
+
+		List<Book> list = bookService.getAll();
+		try {
+			if (list != null) {
+				return new ResponseEntity<List<Book>>(list, HttpStatus.FOUND);
+
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return new ResponseEntity<List<Book>>(HttpStatus.NO_CONTENT);
+	}
+	
+	
+	
+	@GetMapping("/{id}")
+	public ResponseEntity<String> findBookById(@PathVariable Long id) {
+		ObjectMapper Obj = new ObjectMapper();
+		Optional<Book> optional = bookService.getBookById(id);
+
+		try {
+			if (optional.isPresent()) {
+				Book book = optional.get();
+				String bookJson = Obj.writeValueAsString(book);
+				return new ResponseEntity<>(bookJson, HttpStatus.FOUND);
+			} else {
+				return new ResponseEntity<String>(HttpStatus.NO_CONTENT);
+			}
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return Constants.getResponseEntity(Constants.SOMETHING_WENT_WRONG, HttpStatus.INTERNAL_SERVER_ERROR);
+	}
+	
 	
 	@PostMapping("/badd/{id}")
 	public ResponseEntity<String>  addBook(@RequestBody Book book,@PathVariable ("id") Long id ){
@@ -53,6 +105,7 @@ public class BookRestController {
 		
 	}
 	
+	
 	//update book with same category
 	@PutMapping("/bupdate")
 	public ResponseEntity<String> updateBook(@RequestBody Book book){
@@ -69,6 +122,7 @@ public class BookRestController {
 		return new ResponseEntity<String>("Details Not updated" , HttpStatus.NOT_ACCEPTABLE);
 		
 	}
+	
 	
 	//update book as well as  Change Category
 	@PutMapping("/bupdate/{id}")

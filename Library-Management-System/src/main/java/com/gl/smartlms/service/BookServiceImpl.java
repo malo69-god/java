@@ -1,6 +1,7 @@
 package com.gl.smartlms.service;
 
 import java.util.Date;
+import java.util.List;
 import java.util.Optional;
 
 import javax.validation.Valid;
@@ -40,5 +41,21 @@ public class BookServiceImpl  implements BookService{
 	public Optional<Book> getBookById(Long id) {
 		return bookRepository.findById(id);
 	}
+
+	@Override
+	public List<Book> getAll() {
+		return bookRepository.findAll();
+	}
+
+	@Override
+	public Book getBook(Long id) {
+		return bookRepository.findById(id).get();
+	}
+	
+	@Override
+	public Long getTotalCount() {
+		return bookRepository.count();
+	}
+	
 
 }
