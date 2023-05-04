@@ -161,24 +161,7 @@ public class MemberRestController {
 	
 	
 	
-	
-	@DeleteMapping("/remove/{id}")
-	public ResponseEntity<String> deleteMemberById(@RequestParam Long id){
-		
-		try{Optional<Member> member = memberService.getMember(id);
-		if(member.isPresent()) {
-			
-			memberService.deleteMember(id);
-			return new ResponseEntity<String>("Member deleted Suceesfully", HttpStatus.ACCEPTED);
-		}
-		else {
-			return new ResponseEntity<String>("Member Doesn't Exist", HttpStatus.NOT_ACCEPTABLE);
-		}}catch(Exception e) {
-			e.printStackTrace();
-		}
-		
-		return Constants.getResponseEntity(Constants.SOMETHING_WENT_WRONG, HttpStatus.INTERNAL_SERVER_ERROR);
-	}
+
 	
 	
 	
