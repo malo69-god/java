@@ -1,6 +1,7 @@
 package com.gl.smartlms.service;
 
 import java.util.Date;
+
 import java.util.List;
 import java.util.Optional;
 
@@ -10,8 +11,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.gl.smartlms.model.Book;
+import com.gl.smartlms.model.Category;
 import com.gl.smartlms.repository.BookRepository;
 import com.gl.smartlms.constants.*;
+
 
 @Service
 public class BookServiceImpl  implements BookService{
@@ -67,6 +70,12 @@ public class BookServiceImpl  implements BookService{
 	public List<Book> getBooksByIdList(List<Long> ids) {
 		return bookRepository.findAllById(ids);
 	}
+	@Override
+	public List<Book> getByCategory(Category category) {
+		
+		return bookRepository.findByCategory(category);
+	}
+	
 	
 
 }

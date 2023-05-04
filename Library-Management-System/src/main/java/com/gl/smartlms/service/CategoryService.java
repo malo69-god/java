@@ -25,5 +25,7 @@ public interface CategoryService {
 	public Long getTotalCount();
 	
 	public List<Category> getAllBySort();
+
+	public Optional<Category> getCategory(String name);
 	
 }

@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -145,10 +145,66 @@ public class BookRestController {
 			
 			e.printStackTrace();
 		}
-		return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+		return new ResponseEntity<>(HttpStatus.OK);
 	}
 
+	
+	@GetMapping(value = "/list-by-category/{category_id}" , produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<String> findBooksByCategory(@PathVariable("category_id") Long id) {
+		String bookJson;
+		Optional<Category> category = categoryService.getCategory(id);
+		try {
+			if (category.isPresent()) {
+				List<Book> list = bookService.getByCategory(category.get());
 
+				bookJson = Obj.writeValueAsString(list);
+				return new ResponseEntity<String>(bookJson, HttpStatus.FOUND);
+			} else {
+				return new ResponseEntity<String>("Categorgy not Exist", HttpStatus.OK);
+
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		return Constants.getResponseEntity(Constants.SOMETHING_WENT_WRONG, HttpStatus.INTERNAL_SERVER_ERROR);
+
+	}
+	
+	
+	@GetMapping(value = "/list-by-category" , produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<String> findBooksByCategory(@RequestParam("category_name") String name) {
+		String bookJson;
+		Optional<Category> category = categoryService.getCategory(name);
+		try {
+			if (category.isPresent()) {
+				List<Book> list = bookService.getByCategory(category.get());
+				bookJson = Obj.writeValueAsString(list);
+				return new ResponseEntity<String>(bookJson, HttpStatus.FOUND);
+			} else {
+				return new ResponseEntity<String>("Categorgy not Exist", HttpStatus.OK);
+
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		return Constants.getResponseEntity(Constants.SOMETHING_WENT_WRONG, HttpStatus.INTERNAL_SERVER_ERROR);
+
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	
 	
 	@PostMapping("/badd/{id}")

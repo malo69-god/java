@@ -7,6 +7,7 @@ import java.util.Optional;
 import org.springframework.stereotype.Service;
 
 import com.gl.smartlms.model.Book;
+import com.gl.smartlms.model.Category;
  
 
 @Service
@@ -30,6 +31,8 @@ public interface BookService {
 	public List<Book> getByAuthorName(String authors);
 
 	public List<Book> getBooksByIdList(List<Long> ids);
+
+	public List<Book> getByCategory(Category category);
 
 
 

@@ -50,4 +50,10 @@ public class CategoryServiceImpl implements CategoryService {
 	
 	}
 
+	@Override
+	public Optional<Category> getCategory(String name) {
+		System.out.println(name);
+		return categoryRepository.findByName(name);
+	}
+
 }
