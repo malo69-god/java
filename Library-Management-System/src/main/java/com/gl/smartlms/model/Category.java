@@ -13,6 +13,7 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 import lombok.Data;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 
@@ -56,6 +57,7 @@ public class Category  implements Serializable{
 	@Size(max = 1000, message = "*Must not exceed 1000 characters.")
 	private String notes;
 	
+	@JsonFormat(pattern="dd-MM-yyyy")
 	@Column(name = "create_date")
 	private Date createDate;
 	

@@ -94,6 +94,11 @@ public class BookServiceImpl  implements BookService{
 	public List<Book> geAvailabletByCategory(Category category) {
 		return bookRepository.findByCategoryAndStatus(category, Constants.BOOK_STATUS_AVAILABLE);
 	}
+
+	@Override
+	public List<Book> getBypublisherName(String publisher) {
+		return bookRepository.findByPublisher(publisher);
+	}
 	
 	
 

@@ -10,6 +10,8 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.NotEmpty;
 import java.util.Date;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -63,10 +65,14 @@ public class Member implements Serializable{
 	@Column(name = "gender")
 	private String gender;
 	
+	
+	@JsonFormat(pattern="dd-MM-yyyy")
 	@NotNull(message = "*Please enter birth date")
 	@Column(name = "date_of_birth")
 	private Date dateOfBirth;
 	
+	
+	@JsonFormat(pattern="dd-MM-yyyy")
 	@Column(name = "joining_date")
 	private Date joiningDate;
 	

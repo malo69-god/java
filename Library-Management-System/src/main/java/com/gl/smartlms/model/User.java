@@ -18,6 +18,7 @@ import jakarta.validation.constraints.NotNull;
 
 import org.springframework.data.annotation.CreatedDate;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 
@@ -59,11 +60,12 @@ public class User  implements Serializable{
 	@Column(name = "role")
 	private String role;
 	
+	@JsonFormat(pattern="dd-MM-yyyy")
 	 @CreatedDate
 	@Column(name = "created_date")
 	private Date createdDate = new Date();
 	
-
+	@JsonFormat(pattern="dd-MM-yyyy")
 	@Column(name = "last_Modified_Date")
 	private Date lastModifiedDate;
 	

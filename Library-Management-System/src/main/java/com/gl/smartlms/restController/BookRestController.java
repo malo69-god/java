@@ -139,6 +139,38 @@ public class BookRestController {
 		return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 	}
 	
+	
+	@GetMapping(value = "/find-by-publisher/{publisher}", produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<String> getBooksByPublisher(@PathVariable("publisher") String publisher) {
+
+		
+		List<Book> book = bookService.getBypublisherName(publisher);
+		try {
+			if (book != null) {
+
+				String bookJson = Obj.writeValueAsString(book);
+
+				return new ResponseEntity<String>(bookJson, HttpStatus.OK);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	@GetMapping(value="/available" ,produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<String> getAvailable(){
 		List<Book> book = bookService.getAvaialbleBooks();

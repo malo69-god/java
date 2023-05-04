@@ -3,6 +3,7 @@ package com.gl.smartlms.restController;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -32,7 +33,7 @@ public class UserRestController {
 // User Login API
 // ==============================================================
 
-	@PostMapping(value = "/login")
+	@PostMapping(value = "/login" ,produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<String> signUp(@RequestParam String username, @RequestParam String password) {
 
 		User user = userService.getUserValidate(username, password);

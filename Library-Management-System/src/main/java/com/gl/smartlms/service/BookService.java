@@ -40,6 +40,8 @@ public interface BookService {
 
 	public List<Book> geAvailabletByCategory(Category category);
 
+	public List<Book> getBypublisherName(String publisher);
+
 
 
 }

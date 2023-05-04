@@ -2,7 +2,14 @@ package com.gl.smartlms.model;
 
 import java.io.Serializable;
 
+
 import java.util.Date;
+
+
+
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 
 import jakarta.validation.constraints.NotNull;
 
@@ -31,6 +38,7 @@ public class issue implements Serializable {
 	@Column(name = "id")
 	private Long id;
 	
+	@JsonFormat(pattern="dd-MM-yyyy")
 	@NotNull
 	@Column(name = "issue_date")
 	private Date issueDate;
@@ -38,11 +46,15 @@ public class issue implements Serializable {
 	@Column(name = "notes")
 	private String notes;
 	
+	
+	@JsonFormat(pattern="dd-MM-yyyy")
 	@Column(name = "expected_return_date")
 	private Date expectedReturnDate;
 	
 	@Column(name = "returned")
 	private Integer returned;
+	
+
 	
 	
 

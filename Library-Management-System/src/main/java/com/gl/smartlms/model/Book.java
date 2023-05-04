@@ -10,6 +10,7 @@ import java.util.Date;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.NotBlank;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 
@@ -64,6 +65,8 @@ public class Book implements Serializable {
 	@Column(name = "status")
 	private Integer status;
 	
+	
+	@JsonFormat(pattern="dd-MM-yyyy")
 	@Column(name = "create_date")
 	private Date createDate;
 	
