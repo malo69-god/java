@@ -65,6 +65,20 @@ public class BookRestController {
 		return new ResponseEntity<List<Book>>(HttpStatus.NO_CONTENT);
 	}
 	
+	@GetMapping("/find")
+	public ResponseEntity<List<Book>> getBytitle(@RequestParam String title ) {
+
+		List<Book> list = bookService.getBookWithTitle(title);
+		try {
+			if (list != null) {
+				return new ResponseEntity<List<Book>>(list, HttpStatus.FOUND);
+
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return new ResponseEntity<>(HttpStatus.OK);
+	}
 	
 	
 	@GetMapping(value ="/{id}" , produces = MediaType.APPLICATION_JSON_VALUE)
@@ -107,7 +121,7 @@ public class BookRestController {
 	
 	
 	@GetMapping(value = "/find-by-author/{authors}", produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<String> findBooksByAuthor(@PathVariable("authors") String authors) {
+	public ResponseEntity<String> getBooksByAuthor(@PathVariable("authors") String authors) {
 
 		
 		List<Book> book = bookService.getByAuthorName(authors);
@@ -125,16 +139,45 @@ public class BookRestController {
 		return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 	}
 	
+	@GetMapping(value="/available" ,produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<String> getAvailable(){
+		List<Book> book = bookService.getAvaialbleBooks();
+		try {
+			if (book != null) {
+
+				String bookJson = Obj.writeValueAsString(book);
+
+				return new ResponseEntity<String>(bookJson, HttpStatus.OK);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return new ResponseEntity<String>("No Books Are Avaiable", HttpStatus.OK);
+	}
+	
+
+	@GetMapping(value="/category/available/{category_name}" ,produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<String> getAvailableBooksInCategory(@PathVariable ("category_name") String name){
+		
+		Optional<Category> category = categoryService.getCategory(name);
+		try {if(category.isPresent()) {
+		List<Book> list = bookService.geAvailabletByCategory(category.get()); 
+
+			String bookJson = Obj.writeValueAsString(list);
+			return new ResponseEntity<String>(bookJson, HttpStatus.FOUND);
+		}} catch (JsonProcessingException e) {
+		
+			e.printStackTrace();
+		}	
+		return new ResponseEntity<String>("No Books Are Avaiable", HttpStatus.OK);
+	}
+	
+	
+	
+	
 	
 	
 
-	
-	
-	
-	
-	
-	
-	
 	@GetMapping(value = "/find-books/{ids}", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<String> findBooksWithIdList(@PathVariable List<Long> ids) {
 		List<Book> list = bookService.getBooksByIdList(ids);

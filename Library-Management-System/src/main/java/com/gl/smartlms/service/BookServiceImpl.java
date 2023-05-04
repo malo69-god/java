@@ -2,6 +2,7 @@ package com.gl.smartlms.service;
 
 import java.util.Date;
 
+
 import java.util.List;
 import java.util.Optional;
 
@@ -13,6 +14,7 @@ import org.springframework.stereotype.Service;
 import com.gl.smartlms.model.Book;
 import com.gl.smartlms.model.Category;
 import com.gl.smartlms.repository.BookRepository;
+
 import com.gl.smartlms.constants.*;
 
 
@@ -74,6 +76,23 @@ public class BookServiceImpl  implements BookService{
 	public List<Book> getByCategory(Category category) {
 		
 		return bookRepository.findByCategory(category);
+	}
+
+	@Override
+	public List<Book> getBookWithTitle(String title) {
+		
+		return bookRepository.findByTitle(title);
+	}
+
+	@Override
+	public List<Book> getAvaialbleBooks() {
+	
+		return bookRepository.findAvailableBooks();
+	}
+
+	@Override
+	public List<Book> geAvailabletByCategory(Category category) {
+		return bookRepository.findByCategoryAndStatus(category, Constants.BOOK_STATUS_AVAILABLE);
 	}
 	
 	

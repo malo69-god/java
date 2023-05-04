@@ -21,5 +21,13 @@ public interface BookRepository extends JpaRepository<Book, Long> {
 	public List<Book> findByAuthors(String authors);
 
 	public List<Book> findByCategory(Category category);
+
+	public List<Book> findByTitle(String title);
+
+	
+	@Query(value="Select * from Book where status = 1" ,nativeQuery=true)
+	public List<Book> findAvailableBooks();
+
+	public List<Book> findByCategoryAndStatus(Category category, Integer bookStatusAvailable);
 	
 }

@@ -34,6 +34,12 @@ public interface BookService {
 
 	public List<Book> getByCategory(Category category);
 
+	public List<Book> getBookWithTitle(String title);
+
+	public List<Book> getAvaialbleBooks();
+
+	public List<Book> geAvailabletByCategory(Category category);
+
 
 
 }
