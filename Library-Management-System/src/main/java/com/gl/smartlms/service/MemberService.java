@@ -29,6 +29,8 @@ public interface MemberService {
 	public Long getFacultyCount();
 	
 	public Long getStudentsCount();
+
+	public void deleteMember(Long id);
 	
 	 
 	

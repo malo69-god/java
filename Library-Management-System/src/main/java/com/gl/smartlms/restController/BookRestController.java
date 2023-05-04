@@ -159,18 +159,7 @@ public class BookRestController {
 		return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 	}
 	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
+
 	@GetMapping(value="/available" ,produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<String> getAvailable(){
 		List<Book> book = bookService.getAvaialbleBooks();

@@ -59,6 +59,12 @@ public Long getStudentsCount() {
 	}
 
 
+	@Override
+	public void deleteMember(Long id) {
+		memberRepository.deleteById(id);
+	}
+
+
 
 
 
