@@ -2,7 +2,9 @@ package com.gl.smartlms.restController;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -30,17 +32,17 @@ public class CategoryRestController {
 	@Autowired
 	private CategoryService categoryService;
 
-	@RequestMapping(value = "/cadd", method = RequestMethod.POST)
+	@RequestMapping(value = "/add", method = RequestMethod.POST)
 	public ResponseEntity<String> saveCategory(@Valid @RequestBody Category category) {
 
 		category = categoryService.addNew(category);
 
-		return new ResponseEntity<String>("Category Added with type " + category.getName(), HttpStatus.CREATED);
+		return new ResponseEntity<String>("Category Added with type  " + category.getName(), HttpStatus.CREATED);
 
 	}
 	
 	
-	@PutMapping("/cupdate")
+	@PutMapping("/update")
 	public ResponseEntity<String> updateMember(@Valid @RequestBody Category category){
 		
 		Optional<Category> optional = categoryService.getCategory(category.getId());
@@ -49,15 +51,15 @@ public class CategoryRestController {
 			category.setCreateDate(optional.get().getCreateDate());
 			categoryService.save(category);
 			
-			return new ResponseEntity<String>("Category Updated With Type " + optional.get().getName(),HttpStatus.ACCEPTED);
+			return new ResponseEntity<String>("Category Updated With Type  " + optional.get().getName(),HttpStatus.ACCEPTED);
 		}
 		
-		return  new  ResponseEntity<String>("Member Not Found",HttpStatus.NOT_FOUND);
+		return  new  ResponseEntity<String>("Category Not Found",HttpStatus.NOT_FOUND);
 		
 	}
 	
 	
-	@GetMapping("/clist")
+	@GetMapping("/list")
 	public ResponseEntity<List<Category>> showAllMembers() {
 
 		List<Category> clist = categoryService.getAll();
@@ -94,7 +96,7 @@ public class CategoryRestController {
 	
 	
 	
-	@GetMapping("/{id}")
+	@GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<String> findCategoryById(@PathVariable Long id) {
 		Optional<Category> optional = categoryService.getCategory(id);
 		ObjectMapper Obj = new ObjectMapper();
@@ -119,6 +121,50 @@ public class CategoryRestController {
 	}
 	
 	
+
+	@DeleteMapping("/remove/{id}")
+	public ResponseEntity<String> deleteCategoryById(@PathVariable Long id) {
+
+		try {
+			Optional<Category> optional = categoryService.getCategory(id);
+			if (optional.isPresent()) {
+				if (categoryService.hasUsage(optional.get())) {
+					return new ResponseEntity<String>("category is not empty...can not be deleted", HttpStatus.OK);
+				} else {
+					categoryService.deleteCategory(id);
+					return new ResponseEntity<String>("Category deleted Suceesfully", HttpStatus.ACCEPTED);
+				}
+			}
+		}
+
+		catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		return Constants.getResponseEntity(Constants.SOMETHING_WENT_WRONG, HttpStatus.INTERNAL_SERVER_ERROR);
+	}
+	
+	@DeleteMapping("/remove")
+	public ResponseEntity<String> deleteCategory(@RequestBody Category category)
+	{
+		try {
+			Optional<Category> optional = categoryService.getCategory(category.getId());
+			if (optional.isPresent()) {
+				if (categoryService.hasUsage(optional.get())) {
+					return new ResponseEntity<String>("category is not empty...can not be deleted", HttpStatus.OK);
+				} else {
+					categoryService.deleteCategoryByCategoryObject(optional.get());
+					return new ResponseEntity<String>("Category deleted Suceesfully", HttpStatus.ACCEPTED);
+				}
+			}
+		}
+
+		catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		return Constants.getResponseEntity(Constants.SOMETHING_WENT_WRONG, HttpStatus.INTERNAL_SERVER_ERROR);
+	}
 	
 	
 	

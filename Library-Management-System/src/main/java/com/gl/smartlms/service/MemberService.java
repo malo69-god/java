@@ -31,7 +31,8 @@ public interface MemberService {
 	public Long getStudentsCount();
 	
 	 
-	
+	public Member getMemberById(Long id);
+
 
 
 	

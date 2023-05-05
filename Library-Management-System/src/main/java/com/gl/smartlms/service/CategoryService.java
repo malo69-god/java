@@ -28,4 +28,9 @@ public interface CategoryService {
 
 	public Optional<Category> getCategory(String name);
 	
+	public boolean hasUsage(Category category);
+
+	public void deleteCategory(Long id);
+
+	public void deleteCategoryByCategoryObject(Category category);
 }

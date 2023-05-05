@@ -159,18 +159,7 @@ public class BookRestController {
 		return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 	}
 	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
+
 	@GetMapping(value="/available" ,produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<String> getAvailable(){
 		List<Book> book = bookService.getAvaialbleBooks();
@@ -269,20 +258,7 @@ public class BookRestController {
 	}
 	
 	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	@PostMapping("/badd/{id}")
+	@PostMapping("/add/{id}")
 	public ResponseEntity<String>  addBook(@RequestBody Book book,@PathVariable ("id") Long id ){
 		Optional<Category> optional = categoryService.getCategory(id);
 		if(optional.isPresent()) {
@@ -305,7 +281,7 @@ public class BookRestController {
 	
 	
 	//update book with same category
-	@PutMapping("/bupdate")
+	@PutMapping("/update")
 	public ResponseEntity<String> updateBook(@RequestBody Book book){
 		Optional<Book> optional = bookService.getBookById(book.getId());
 		if(optional.isPresent()) {
@@ -323,7 +299,7 @@ public class BookRestController {
 	
 	
 	//update book as well as  Change Category
-	@PutMapping(value ="/bupdate/{id}" , produces = MediaType.APPLICATION_JSON_VALUE)
+	@PutMapping(value ="/update/{id}" , produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<String> updateBook(@RequestBody Book book,@PathVariable Long id){
 		ObjectMapper Obj = new ObjectMapper();
 		Optional<Book> optional = bookService.getBookById(book.getId());

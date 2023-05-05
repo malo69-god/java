@@ -59,7 +59,7 @@ public class UserRestController {
 // User Register(Signup) API
 // ==============================================================
 
-	@PostMapping(value = "/register")
+	@PostMapping(value = "/register"  ,produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<String> registerUser(@Valid @RequestBody User user) {
 		user = userService.registerUser(user);
 		try {

@@ -59,6 +59,13 @@ public Long getStudentsCount() {
 	}
 
 
+	@Override
+	public Member getMemberById(Long id) {
+
+		return memberRepository.findById(id).get();
+	}
+
+
 
 
 

@@ -4,25 +4,32 @@ import java.io.Serializable;
 
 
 
+
 import jakarta.validation.constraints.NotNull;
 
 
 import jakarta.validation.constraints.NotEmpty;
 import java.util.Date;
+import java.util.List;
+
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 
-// no args constructor type fame mname lname gen dob jod
+
 
 @Entity
 @Table(name = "member")
@@ -81,6 +88,13 @@ public class Member implements Serializable{
 	
 	@Column(name = "email")
 	private String email;
+	
+	
+	
+	@JsonIgnore
+	@OneToMany(mappedBy = "member", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	private List<Issue> issue;
+	
 	
 	
 	public Member(@NotNull String type, @NotNull String firstName, @NotNull String middleName, @NotNull String lastName,

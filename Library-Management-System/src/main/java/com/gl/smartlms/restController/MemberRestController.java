@@ -94,7 +94,7 @@ public class MemberRestController {
 	// ==============================================================
 	//	List Member API(change)url
 	// ==============================================================
-	@GetMapping("/mlist")
+	@GetMapping("/list")
 	public ResponseEntity<List<Member>> showAllMembers() {
 
 		List<Member> list = memberService.getAll();
@@ -113,7 +113,7 @@ public class MemberRestController {
 	//	Update Member API(change) url(change)
 	// ==============================================================
 
-	@PutMapping("/mupdate")
+	@PutMapping("/update")
 	public ResponseEntity<String> updateMember(@Valid @RequestBody Member member) {
 
 		Optional<Member> member1 = memberService.getMember(member.getId());

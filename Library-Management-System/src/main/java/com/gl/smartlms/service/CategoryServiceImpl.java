@@ -55,5 +55,24 @@ public class CategoryServiceImpl implements CategoryService {
 		System.out.println(name);
 		return categoryRepository.findByName(name);
 	}
+	
+	
+
+	@Override
+	public boolean hasUsage(Category category) {
+		return category.getBooks().size() > 0;
+	}
+
+	@Override
+	public void deleteCategory(Long id) {
+		categoryRepository.deleteById(id);
+		
+	}
+
+	@Override
+	public void deleteCategoryByCategoryObject(Category category) {
+		categoryRepository.delete(category);
+		
+	}
 
 }
