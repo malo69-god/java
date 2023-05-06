@@ -25,7 +25,7 @@ public class BookServiceImpl  implements BookService{
 	private BookRepository bookRepository;
 	
 	@Override
-	public Book getByTag(String tag) {
+	public List<Book> getByTag(String tag) {
 		return bookRepository.findByTag(tag);
 	}
 
@@ -99,7 +99,50 @@ public class BookServiceImpl  implements BookService{
 	public List<Book> getBypublisherName(String publisher) {
 		return bookRepository.findByPublisher(publisher);
 	}
+
+	@Override
+	public List<Book> checkAvailableBooks() {
+		
+		return bookRepository.findAllAvailableBooks(Constants.BOOK_STATUS_AVAILABLE);
+	}
+
+	@Override
+	public List<Book> checkIssuedBooks() {
+			return bookRepository.findAllIssuedBooks(Constants.BOOK_STATUS_ISSUED);
+	}
+
+
+
+	@Override
+	public List<Book> listCategoryIssuedBooks(Category category) {
+		return bookRepository.findByCategoryAndStatus(category, Constants.BOOK_STATUS_ISSUED);
+	}
+
+	@Override
+	public List<Book> listCategoryAvailableBooks(Category category) {
+		
+		return  bookRepository.findByCategoryAndStatus(category, Constants.BOOK_STATUS_AVAILABLE);
+	}
+
+	@Override
+	public Long getAvailableBookCount() {
+		
+		return  bookRepository.countBooksBasedOnStatus(Constants.BOOK_STATUS_AVAILABLE);
+	}
+
+	@Override
+	public Long getIssuedBookCount() {
 	
+		return bookRepository.countBooksBasedOnStatus(Constants.BOOK_STATUS_ISSUED);
+
+
+	}
+
+	@Override
+	public void delete(Book book) {
+	
+		 bookRepository.delete(book);
+	}
 	
 
 }

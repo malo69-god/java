@@ -14,7 +14,7 @@ import com.gl.smartlms.model.Category;
 public interface BookService {
 	
 	
-	public Book getByTag(String tag);
+	public List<Book> getByTag(String tag);
 
 	public Book addNewBook(Book book);
 
@@ -41,6 +41,23 @@ public interface BookService {
 	public List<Book> geAvailabletByCategory(Category category);
 
 	public List<Book> getBypublisherName(String publisher);
+
+	public List<Book> checkAvailableBooks();
+
+	public List<Book> checkIssuedBooks();
+
+	public List<Book> listCategoryIssuedBooks(Category category);
+
+	public List<Book> listCategoryAvailableBooks(Category category);
+
+	public Long getAvailableBookCount();
+
+	public Long getIssuedBookCount();
+
+	public void delete(Book book);
+
+
+	
 
 
 

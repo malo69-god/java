@@ -8,12 +8,17 @@ import org.springframework.stereotype.Repository;
 import com.gl.smartlms.model.User;
 
 @Repository
-public interface UserRepository  extends JpaRepository<User,Long>{
+public interface UserRepository extends JpaRepository<User, Long> {
 
-	List<User> findAllByOrderByNameAsc();
+	List<User> findAllByOrderByFirstNameAscMiddleNameAsc();
 
-	User findByUsername(String username);
+	public Long countByType(String type);
 
 	User findByUsernameAndPassword(String username, String password);
 
+	List<User> findByTypeContaining(String keyword);
+
+	List<User> findByActive(int active);
+
+	
 }
