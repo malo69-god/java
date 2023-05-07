@@ -64,7 +64,7 @@ public class UserRestController {
 			e.printStackTrace();
 		}
 
-		return Constants.getResponseEntity(Constants.SOMETHING_WENT_WRONG, HttpStatus.INTERNAL_SERVER_ERROR);
+		return Constants.getResponseEntity("Username Not Exist", HttpStatus.INTERNAL_SERVER_ERROR);
 
 	}
 
@@ -72,22 +72,20 @@ public class UserRestController {
 	// User Register API		(Admin + User)
 	// ==============================================================
 
-	@PostMapping(value = "/register", produces = MediaType.APPLICATION_JSON_VALUE)
+	@PostMapping(value = "/users", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<String> registerUser(@Valid @RequestBody User user) {
 		user = userService.registerUser(user);
 		try {
 			if (user != null) {
 				String userJson = Obj.writeValueAsString(user);
 				return new ResponseEntity<String>("User Registered Sucessfully" + userJson, HttpStatus.CREATED);
-			} else {
-				return new ResponseEntity<String>("registration Failed", HttpStatus.NOT_ACCEPTABLE);
 			}
 		} catch (Exception e) {
 
 			e.printStackTrace();
 		}
 
-		return Constants.getResponseEntity(Constants.SOMETHING_WENT_WRONG, HttpStatus.INTERNAL_SERVER_ERROR);
+		return Constants.getResponseEntity("Regsitration Failed", HttpStatus.INTERNAL_SERVER_ERROR);
 
 	}
 
@@ -95,7 +93,7 @@ public class UserRestController {
 	// User Count API		(Admin)
 	// ==============================================================
 
-	@GetMapping("/total/count")
+	@GetMapping("/count")
 	public ResponseEntity<String> countAllUsers() {
 		Long userCount = userService.getTotalCount();
 		if (userCount != 0) {
@@ -144,13 +142,13 @@ public class UserRestController {
 					"Member Added with Name " + user.getFirstName() + " and type " + user.getType(),
 					HttpStatus.CREATED);
 		}
-		return Constants.getResponseEntity(Constants.SOMETHING_WENT_WRONG, HttpStatus.INTERNAL_SERVER_ERROR);
+		return Constants.getResponseEntity("User Addition Failed", HttpStatus.INTERNAL_SERVER_ERROR);
 	}
 
 	// ==============================================================
 	// List Users Api				(Admin)
 	// ==============================================================
-	@GetMapping("/list")
+	@GetMapping("/users")
 	public ResponseEntity<List<User>> showAllUsers() {
 
 		List<User> list = userService.getAll();
@@ -168,7 +166,7 @@ public class UserRestController {
 	// ==============================================================
 	// List Student Member Api (Admin)
 	// ==============================================================
-	@GetMapping("/student/list")
+	@GetMapping("/student")
 	public ResponseEntity<List<User>> showAllStudents() {
 
 		List<User> list = userService.getAllStudent();
@@ -186,7 +184,7 @@ public class UserRestController {
 	// ==============================================================
 	// List Faculty Member Api		(Admin)
 	// ==============================================================
-	@GetMapping("/faculty/list")
+	@GetMapping("/faculty")
 	public ResponseEntity<List<User>> showAllFaculties() {
 
 		List<User> list = userService.getAllFaculty();
@@ -204,7 +202,7 @@ public class UserRestController {
 	// ==============================================================
 	// List Active Member Api		(Admin)
 	// ==============================================================
-	@GetMapping("/active/list")
+	@GetMapping("/active")
 	public ResponseEntity<List<User>> showAllActive() {
 
 		List<User> list = userService.getAllActive();
